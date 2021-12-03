@@ -1,4 +1,4 @@
-$list = Import-Csv .\Day1-1.csv -Header Depth
+$list = Import-Csv .\Day1.csv -Header Depth
 $old1depth = 
 $old2depth = 
 $oldtotal = 

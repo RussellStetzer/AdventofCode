@@ -1,4 +1,4 @@
-$move = import-csv .\Day2.csv -Header Direction, Speed -Delimiter " "  
+$move = import-csv .\Day2-demo.csv -Header Direction, Speed -Delimiter " "  
 $depth = 0
 $distance = 0
 $total = 0
