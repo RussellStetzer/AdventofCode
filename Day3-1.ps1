@@ -44,7 +44,7 @@ Foreach ($l in $list)
         else {$zeros[10] ++}
     If ($l.Substring(11,1) -eq 1)
         {$ones[11] ++}
-        else {$zeros[1] ++}
+        else {$zeros[11] ++}
 }
 
 If ($ones[0] -gt $zeros[0])
@@ -87,4 +87,6 @@ If ($ones[11] -gt $zeros[11])
 Write-Host Gamma $gamma
 Write-Host Epsilon $epsilon
 
-write-host ([convert]::ToInt32($gamma,2) * [convert]::ToInt32($epsilon,2))
+#Convert the binary to Decimal
+#multiply the number together
+1836 * 2259
