@@ -13,184 +13,60 @@
 #Repeat
 
 #We are using ArrayList since it lets us delete entries in the Array directly
-[System.Collections.ArrayList]$Values = Import-Csv .\Day3-Demo.csv -header Values
+[System.Collections.ArrayList]$Values = Import-Csv .\Day3-Demo.csv -header Value
 
 
 #This was the loop statement I was looking for in Day3-1
 
-#Digit Zero
+#This is setting the number of digits in length of the CSV entries
+$ValueCount = $Values.Value[0].Length
+#Decrementing the number by one since the indexes start at 0 instead of 1
+$ValueCount--
+
+#This will loop the whole process the number of times to match the length of the CSV entries
+for ($indexLength = 0; $indexLength -lt $ValueCount; $indexLength++)
+{
+
+#Reset the variables for each pass
 $Zero = 0
 $One = 0
 $Keeper =
 
-for ( $index = 0; $index -lt $Values.count; $index++)
+#Loop for each entry in the CSV, looping for the number of entries in the CSB
+for ($index = 0; $index -lt $Values.Count; $index++)
 {
-$l = $Values[$index].Values.ToString()
-If ($l.Substring(0,1) -eq 1)
+#Convert the entry to string to run SubString actions on it
+    $l = $Values[$index].Value.ToString()
+#Looking at the digit matching the loop we are in and incrementing the count on Zero or One
+If ($l.Substring($indexLength,1) -eq 1)
     {$One ++}
 Else {
     $Zero ++}
 }
-
+#Deciding which number has a higher count, giving One precident on ties
 If ($Zero -gt $One)
     {$Keeper = 0}
 else {
     $Keeper = 1}
 
-for ( $index = 0; $index -lt $Values.count; $index++)
+# I need to reverse this lookup. When deleting an entry, the next number would slide back and get skipped when the index increments
+for ($index = $ValueCount; $index -gt -1; $index--)
 {
-$l = $Values[$index].Values.ToString()
-If ($l.Substring(0,1) -ne $Keeper)
+#Convert the entry to string to run SubString actions on it
+$l = $Values[$index].Value.ToString()
+#Checking if the entry not equals the keeper value, remove the entry
+If ($l.Substring($indexLength,1) -ne $Keeper)
 {$Values.RemoveAt($index)}
 }
 
-#If ($Values -eq 1)
-#{Write-Host $Values}
-#Else {Write-host $Values.Count}
-Write-Host Value 0
+#If we have gotten down to 
+If ($Values.count -eq 1)
+{Break
+Write-Host $Values}
+Write-Host Value $indexLength
 Write-Host Zero $Zero
 Write-Host One $One
 Write-Host Keeper $Keeper
 Write-Host $Values
-
-
-#Digit 1
-$Zero = 0
-$One = 0
-$Keeper =
-
-for ( $index = 0; $index -lt $Values.count; $index++)
-{
-$l = $Values[$index].Values.ToString()
-If ($l.Substring(1,1) -eq 1)
-    {$One ++}
-Else {
-    $Zero ++}
 }
 
-If ($Zero -gt $One)
-    {$Keeper = 0}
-else {
-    $Keeper = 1}
-
-for ( $index = 0; $index -lt $Values.count; $index++)
-{
-$l = $Values[$index].Values.ToString()
-If ($l.Substring(1,1) -ne $Keeper)
-{$Values.RemoveAt($index)}
-}
-
-#If ($Values -eq 1)
-#{Write-Host $Values}
-#Else {Write-host $Values.Count}
-Write-Host Value 1
-Write-Host Zero $Zero
-Write-Host One $One
-Write-Host Keeper $Keeper
-Write-Host $Values
-
-#Digit 2
-$Zero = 0
-$One = 0
-$Keeper =
-
-for ( $index = 0; $index -lt $Values.count; $index++)
-{
-$l = $Values[$index].Values.ToString()
-If ($l.Substring(2,1) -eq 1)
-    {$One ++}
-Else {
-    $Zero ++}
-}
-
-If ($Zero -gt $One)
-    {$Keeper = 0}
-else {
-    $Keeper = 1}
-
-for ( $index = 0; $index -lt $Values.count; $index++)
-{
-$l = $Values[$index].Values.ToString()
-If ($l.Substring(2,1) -ne $Keeper)
-{$Values.RemoveAt($index)}
-}
-
-
-#If ($Values -eq 1)
-#{Write-Host $Values}
-#Else {Write-host $Values.Count}
-Write-Host Value 2
-Write-Host Zero $Zero
-Write-Host One $One
-Write-Host Keeper $Keeper
-Write-Host $Values
-
-#Digit 3
-$Zero = 0
-$One = 0
-$Keeper =
-
-for ( $index = 0; $index -lt $Values.count; $index++)
-{
-$l = $Values[$index].Values.ToString()
-If ($l.Substring(3,1) -eq 1)
-    {$One ++}
-Else {
-    $Zero ++}
-}
-
-If ($Zero -gt $One)
-    {$Keeper = 0}
-else {
-    $Keeper = 1}
-
-for ( $index = 0; $index -lt $Values.count; $index++)
-{
-$l = $Values[$index].Values.ToString()
-If ($l.Substring(3,1) -ne $Keeper)
-{$Values.RemoveAt($index)}
-}
-
-#If ($Values -eq 1)
-#{Write-Host $Values}
-#Else {Write-host $Values.Count}
-Write-Host Value 3
-Write-Host Zero $Zero
-Write-Host One $One
-Write-Host Keeper $Keeper
-Write-Host $Values
-
-#Digit 4
-$Zero = 0
-$One = 0
-$Keeper =
-
-for ( $index = 0; $index -lt $Values.count; $index++)
-{
-$l = $Values[$index].Values.ToString()
-If ($l.Substring(4,1) -eq 1)
-    {$One ++}
-Else {
-    $Zero ++}
-}
-
-If ($Zero -gt $One)
-    {$Keeper = 0}
-else {
-    $Keeper = 1}
-
-for ( $index = 0; $index -lt $Values.count; $index++)
-{
-$l = $Values[$index].Values.ToString()
-If ($l.Substring(4,1) -ne $Keeper)
-{$Values.RemoveAt($index)}
-}
-
-#If ($Values -eq 1)
-#{Write-Host $Values}
-#Else {Write-host $Values.Count}
-Write-Host Value 4
-Write-Host Zero $Zero
-Write-Host One $One
-Write-Host Keeper $Keeper
-Write-Host $Values
