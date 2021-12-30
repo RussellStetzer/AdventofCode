@@ -13,30 +13,32 @@
 #Repeat
 
 #We are using ArrayList since it lets us delete entries in the Array directly
-[System.Collections.ArrayList]$Values = Import-Csv .\Day3-Demo.csv -header Value
+[System.Collections.ArrayList]$Values = Import-Csv .\Day3-Demo.csv -header Entry
 
 
 #This was the loop statement I was looking for in Day3-1
 
 #This is setting the number of digits in length of the CSV entries
-$ValueCount = $Values.Value[0].Length
+$ValueCount = $Values.Entry[0].Length
 #Decrementing the number by one since the indexes start at 0 instead of 1
 $ValueCount--
 
 #This will loop the whole process the number of times to match the length of the CSV entries
-for ($indexLength = 0; $indexLength -lt $ValueCount; $indexLength++)
+for ($indexLength = 0; $indexLength -lt $Value.Count; $indexLength++)
 {
 
 #Reset the variables for each pass
+$ArrayLength = $Values.count
+$ArrayLength--
 $Zero = 0
 $One = 0
 $Keeper =
 
 #Loop for each entry in the CSV, looping for the number of entries in the CSB
-for ($index = 0; $index -lt $Values.Count; $index++)
+for ($index = 0; $index -lt $ValuesCount; $index++)
 {
 #Convert the entry to string to run SubString actions on it
-    $l = $Values[$index].Value.ToString()
+    $l = $Values[$index].Entry.ToString()
 #Looking at the digit matching the loop we are in and incrementing the count on Zero or One
 If ($l.Substring($indexLength,1) -eq 1)
     {$One ++}
@@ -50,22 +52,19 @@ else {
     $Keeper = 1}
 
 # I need to reverse this lookup. When deleting an entry, the next number would slide back and get skipped when the index increments
-for ($index = $ValueCount; $index -gt -1; $index--)
+for ($index = $ArrayLength; $index -ge 0; $index--)
 {
 #Convert the entry to string to run SubString actions on it
-$l = $Values[$index].Value.ToString()
+$l = $Values[$index].Entry.ToString()
 #Checking if the entry not equals the keeper value, remove the entry
 If ($l.Substring($indexLength,1) -ne $Keeper)
-{
-    Write-Host $Values.RemoveAt($index)
+{$Values.RemoveAt($index)}
 }
-Else {Write-Host Keeping $Values($index)}
-}
-#If we have gotten down to 
+
+#If we have gotten down to only one entry
 If ($Values.count -eq 1)
 {Break
 Write-Host $Values}
-
 Write-Host Value $indexLength
 Write-Host Zero $Zero
 Write-Host One $One
