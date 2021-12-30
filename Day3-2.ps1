@@ -57,8 +57,7 @@ $l = $Values[$index].Value.ToString()
 #Checking if the entry not equals the keeper value, remove the entry
 If ($l.Substring($indexLength,1) -ne $Keeper)
 {
-    Write-Host Removing $Values($index)
-    $Values.RemoveAt($index)
+    Write-Host $Values.RemoveAt($index)
 }
 Else {Write-Host Keeping $Values($index)}
 }
@@ -66,6 +65,7 @@ Else {Write-Host Keeping $Values($index)}
 If ($Values.count -eq 1)
 {Break
 Write-Host $Values}
+
 Write-Host Value $indexLength
 Write-Host Zero $Zero
 Write-Host One $One
