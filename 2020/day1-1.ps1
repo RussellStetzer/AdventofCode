@@ -28,24 +28,27 @@ Of course, your expense report is much larger. Find the two entries that sum to 
 #import CSV
 $numbers = import-csv .\day1-1sample.csv -Header Value
 #Loop through the array
-foreach ($n In $numbers) {
+foreach ($n In $numbers) 
+{
 #Start at the end of the array for the loop to break if you reach the starting number 
 ##As of right now, those write-outputs do not appear on the screen. why?
-For ($counter = ($numbers.Count - 1); $counter -eq -1; $counter--)
+    For ($counter = $numbers.Count - 1; $counter -ge 0; $counter--)
     {
-    Write-Output "N value" $n.Value
-    write-output "Number count" $numbers[$counter]
-    write-output "Number count value" $numbers[$counter].value
-   IF ($n.value -eq $numbers[$counter].Value)
+        IF ($n.value -eq $numbers[$counter].Value)
         {
-        break
-        Else
-            {
+            break
+            Else
+                {
             #Do the math to see if you found the value
             If ($n.Value + $numbers[$counter].Value -eq 2020)
                 {
  
-                Write-Host $n.value * $numbers[$counter].Value
+                Write-output $n.value * $numbers[$counter].Value
+                
+                }
+                else {
+                    write-output "N value" $n
+                    write-output "Number value" $numbers[$counter].Value
                 }
 
             }
