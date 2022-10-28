@@ -26,34 +26,27 @@ Of course, your expense report is much larger. Find the two entries that sum to 
 
 "@
 #import CSV
-$numbers = import-csv .\day1-1sample.csv -Header Value
+$numbers = import-csv .\day1-data.csv -Header Value
 #Loop through the array
 foreach ($n In $numbers) 
 {
-#Start at the end of the array for the loop to break if you reach the starting number 
-##As of right now, those write-outputs do not appear on the screen. why?
+#Start at the end of the array and work your way forward in the list for the loop to break if you reach the ForEach number. Everything past it would be already tested.
     For ($counter = $numbers.Count - 1; $counter -ge 0; $counter--)
     {
-        IF ($n.value -eq $numbers[$counter].Value)
+        #Check if we have gone through the loop back to matching numbers
+        IF ($n.value -ne $numbers[$counter].Value)
         {
+            #Test if we have two values adding up to 2020
+            If ([int]$n.Value + [int]$numbers[$counter].Value -eq 2020)
+                {
+                    Write-output "Solution!!!"
+                    [int]$n.value * [int]$numbers[$counter].Value | Write-output
+                }
+        }  
+        Else
+            {    
+            #The number match, so every number after this is a repeat. Exit the loop
             break
-            Else
-                {
-            #Do the math to see if you found the value
-            If ($n.Value + $numbers[$counter].Value -eq 2020)
-                {
- 
-                Write-output $n.value * $numbers[$counter].Value
-                
-                }
-                else {
-                    write-output "N value" $n
-                    write-output "Number value" $numbers[$counter].Value
-                }
-
-            }
-         }
-    
+            }    
     }  
-
 }
