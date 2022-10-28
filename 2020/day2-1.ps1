@@ -23,12 +23,35 @@ How many passwords are valid according to their policies?
 #We are probably going to need to set a header on the imported file to set Range, Letter, Sample or something
 $Array = import-csv .\day2-sample.csv -delimiter " " -Header Range, Letter, Password
 #We will need to set a count of how many correct entries we get
-[int]$count = 0
+[int]$CorrectPasswords = 0
 
 Foreach ($Entry in $Array)
 {
-    Write-Output $Entry.Range
-    Write-Output $Entry.Letter
-    Write-output $Entry.Password
+[int]$lettercount = 0
+
+    #Write-Output $Entry.Letter[0]
+    #Write-output $Entry.Password
+    #Write-output $Entry.Password.Length
+    #parse through the Password counting all of the letters matching the letter rule
+    For ($count=0; $count -lt $Entry.Password.Length; $count++)
+    {
+        If ($Entry.Password[$count] -match $Entry.Letter[0])
+        {
+            $lettercount++
+        }
+    }
+    write-output "letter count"$lettercount
+    Write-Output $Entry.Range[0]
+    Write-Output $Entry.Range[2]
+#See if $lettercount matches the critera given in the Range
+#The If statement is not working for some reason. switching it to -ge got it to work, but then it would not be correct.
+If ($Entry.Range[0] -le $lettercount)
+    {
+        Write-output "letter count is -ge"
+        If (-le $Entry.Range[2] $lettercount )
+        {
+            $CorrectPasswords++
+        }
+    }
 }
-Write-Output $count
+Write-Output $CorrectPasswords
