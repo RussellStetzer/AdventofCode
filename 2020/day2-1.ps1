@@ -21,7 +21,7 @@ How many passwords are valid according to their policies?
 "@
 
 #We are probably going to need to set a header on the imported file to set Range, Letter, Sample or something
-$Array = import-csv .\day2-data.csv -delimiter " " -Header Range, Letter, Password
+$Array = import-csv .\day2-sample.csv -delimiter " " -Header Range, Letter, Password
 #We will need to set a count of how many correct entries we get
 [int]$CorrectPasswords = 0
 
@@ -32,7 +32,7 @@ Foreach ($Entry in $Array)
 #Maybe process as a string, moving the characters to one variable looking for the -. When you find it, move to a differnt variable?    
     [string]$stringlow = $null
     [string]$stringhigh = $null
-
+#Start at the first digit of .Range, if not a -, add it to StringLow. When you find the -, set the Count past the For range and it will exit after the pass.
     For ($count=0; $count -lt $Entry.Range.Length; $count++)
     {
         If ($Entry.Range[$count] -ne '-')
@@ -42,23 +42,27 @@ Foreach ($Entry in $Array)
         $count = $Entry.Range.Length
         }
     }
-
+    #Get the length of the .range and subtract one since the count starts at zero. Starting on the last digit, check if it is a - and add it to StringHigh. Since we are going backwards, we have to append the following diging BEOFRE stringHigh else it would write multi-digts backwards
     For ($count=($Entry.Range.length - 1); $count -ge 0; $count--)
     {
         If ($Entry.Range[$count] -ne '-')
         {
-            $stringhigh = $Entry.Range[$count] + $stringlow
+            $stringhigh = $Entry.Range[$count] + $stringhigh
         } else {
             $count = -1
         }
     }
-    #Write-Output $Entry.Letter[0]
-    #Write-output $Entry.Password
-    #Write-output $Entry.Password.Length
+    Write-Output $Entry
+    Write-Output $Entry.Letter[0]
+    Write-output $Entry.Password
+    Write-output $Entry.Password.Length
+    Write-Output $stringlow
+    write-output $stringhigh
+
     #parse through the Password counting all of the letters matching the letter rule
     For ($count=0; $count -lt $Entry.Password.Length; $count++)
     {
-        If ($Entry.Password[$count] -match $stringlow)
+        If ($Entry.Password[$count] -match $Entry.Letter[0])
         {
             $lettercount++
         }
@@ -66,12 +70,18 @@ Foreach ($Entry in $Array)
 #See if $lettercount matches the critera given in the Range
 #I am still not exactly sure why it worked, but I had to add double quotes to the $lettercount variable. Maybe when comparing two variables, it does something?
 #Supposedly, to have a variable expand to is info, rather than looking at the words written, you need a double quote.
-    If ("$lettercount" -ge $Entry.Range[0])
+    If ("$lettercount" -ge "$stringlow")
         {
-            If ("$lettercount" -le $stringhigh)
+            If ("$lettercount" -le "$stringhigh")
             {
+            Write-Output "Match"
               $CorrectPasswords++
+          } else {
+            Write-Output "Not Match High"
           }
-        }
+        } else {
+          Write-Output "Not Match Low"  
+                }
+
 }
 Write-Output $CorrectPasswords
