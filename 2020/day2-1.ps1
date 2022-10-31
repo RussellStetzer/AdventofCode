@@ -21,7 +21,7 @@ How many passwords are valid according to their policies?
 "@
 
 #We are probably going to need to set a header on the imported file to set Range, Letter, Sample or something
-$Array = import-csv .\day2-sample.csv -delimiter " " -Header Range, Letter, Password
+$Array = import-csv .\day2-data.csv -delimiter " " -Header Range, Letter, Password
 #We will need to set a count of how many correct entries we get
 [int]$CorrectPasswords = 0
 
@@ -52,12 +52,12 @@ Foreach ($Entry in $Array)
             $count = -1
         }
     }
-    Write-Output $Entry
-    Write-Output $Entry.Letter[0]
-    Write-output $Entry.Password
-    Write-output $Entry.Password.Length
-    Write-Output $stringlow
-    write-output $stringhigh
+    #Write-Output $Entry
+    #Write-Output $Entry.Letter[0]
+    #Write-output $Entry.Password
+    #Write-output $Entry.Password.Length
+    #Write-Output $stringlow
+    #write-output $stringhigh
 
     #parse through the Password counting all of the letters matching the letter rule
     For ($count=0; $count -lt $Entry.Password.Length; $count++)
@@ -67,12 +67,13 @@ Foreach ($Entry in $Array)
             $lettercount++
         }
     }
+    #Write-Output $lettercount
 #See if $lettercount matches the critera given in the Range
 #I am still not exactly sure why it worked, but I had to add double quotes to the $lettercount variable. Maybe when comparing two variables, it does something?
 #Supposedly, to have a variable expand to is info, rather than looking at the words written, you need a double quote.
-    If ("$lettercount" -ge "$stringlow")
+    If ($lettercount -ge "$stringlow")
         {
-            If ("$lettercount" -le "$stringhigh")
+            If ($lettercount -le "$stringhigh")
             {
             Write-Output "Match"
               $CorrectPasswords++
