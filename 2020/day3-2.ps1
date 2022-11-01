@@ -19,7 +19,7 @@ What do you get if you multiply together the number of trees encountered on each
 $Passes = import-csv .\day3-input.csv -Header Right, Down
 $Array = import-csv .\day3-data.csv -Header Value
 #Starting Total at 1 so that we can multiply the later steps succesfully
-[int]$Total = 1
+[Int64]$Total = 1
 #Using this count to accound for the Passes that have Down set to a value higher than 1
 [int]$Count = 0
 
@@ -33,7 +33,6 @@ ForEach ($Pass in $Passes)
     { 
         #Increment the count to see if this pass is recorded for the ones with Down being higher than 1
         $Count++
-        Write-Output $Count
         #If matching, will record the hits and reset the count
         If ($Count -match $Pass.Down)
         {
@@ -50,11 +49,9 @@ ForEach ($Pass in $Passes)
             }
             #Resets the counter to be incremented next pass
             $Count = 0
-        } else {
-            #This should escape this pass of the entry allowing the count to increase next pass to be recorded
-            Break
-        }
+        } 
     }
-    $Total = $Total * $Hits
+    Write-output $Hits
+    $Total = $Total * "$Hits"
 }
 Write-Output $Total
