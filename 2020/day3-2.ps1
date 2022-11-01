@@ -17,12 +17,11 @@ What do you get if you multiply together the number of trees encountered on each
 #For the last example, maybe keep a count of how many rown down you go. If even, increment the Column and row. If odd, only increment the row?
 
 $Passes = import-csv .\day3-input.csv -Header Right, Down
-$Array = import-csv .\day3-data.csv -Header Value
+$Array = import-csv .\day3-sample.csv -Header Value
 #Starting Total at 1 so that we can multiply the later steps succesfully
 [Int64]$Total = 1
 #Using this count to accound for the Passes that have Down set to a value higher than 1
 [int]$Count = 0
-
 
 ForEach ($Pass in $Passes)
 {
@@ -33,19 +32,23 @@ ForEach ($Pass in $Passes)
     { 
         #Increment the count to see if this pass is recorded for the ones with Down being higher than 1
         $Count++
+        Write-output Column $Column
+        Write-Output Count $count
         #If matching, will record the hits and reset the count
         If ($Count -match $Pass.Down)
         {
+            Write-Output Pass
             If ($Entry.Value[$Column] -match "#")
             {
-            $Hits++ 
+                Write-Output Hit
+                $Hits++ 
             }
             #incrementing the column per loop
             $Column = $Column + $Pass.Right
             #looping back to the left once we get past the 31 digits of the row
-            If ($Column -ge 31)
+                If ($Column -ge $Entry.Value.Length)
             {
-                $Column = $Column - 31
+                $Column = $Column - $Entry.Value.Length
             }
             #Resets the counter to be incremented next pass
             $Count = 0
