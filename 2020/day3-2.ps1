@@ -32,21 +32,18 @@ ForEach ($Pass in $Passes)
     { 
         #Increment the count to see if this pass is recorded for the ones with Down being higher than 1
         $Count++
-        Write-output Column $Column
-        Write-Output Count $count
         #If matching, will record the hits and reset the count
         If ($Count -match $Pass.Down)
         {
-            Write-Output Pass
-            If ($Entry.Value[$Column] -match "#")
-            {
-                Write-Output Hit
-                $Hits++ 
-            }
             #incrementing the column per loop
             $Column = $Column + $Pass.Right
+            Write-Output $column
+            If ($Entry.Value[$Column] -match "#")
+            {
+                $Hits++ 
+            }
             #looping back to the left once we get past the 31 digits of the row
-                If ($Column -ge $Entry.Value.Length)
+            If ($Column -ge $Entry.Value.Length)
             {
                 $Column = $Column - $Entry.Value.Length
             }
