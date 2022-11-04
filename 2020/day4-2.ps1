@@ -76,6 +76,7 @@ $hcl = $null
 $ecl = $null
 $psid = $null
 $ValidPassports = 0
+$Found = 0
 
 #Scan the entry for the requires fields and count the matches
 ForEach ($Line in $Array)
@@ -83,10 +84,10 @@ ForEach ($Line in $Array)
     $SplitLine = $Line -split " "
     Foreach ($Entry in $SplitLine)
     {
-        Write-Output $Entry
         #If it is not null, it has values we want to combine with any other lines
         If (!($Entry))
             {
+            Write-Output Blank
             #Reset the Found variable to protect against a line containing only cid which is not needed
             $Found = 0
             $byr = $null
@@ -99,18 +100,32 @@ ForEach ($Line in $Array)
             }
         else 
             {
-            #Scan the line for values
+                #Trim the entry to just the character to be evaluated
+                [string]$Value = $Entry.Remove(0,4)
+                #Scan the line for values
             If ($Entry -like "*byr:*")
                 {
-                $byr = $true
+
+
+
+                    If (([int]$Value -le 2002) -or ([int]$Value -ge 1920)) 
+                        {
+                        $byr = $true
+                        }
                 }
             If ($Entry -like "*iyr:*")
                 {
-                $iyr = $true
-                }
+                If (($Value -le 2020) -or ($Value -ge 2010))
+                    {
+                    $iyr = $true
+                    }
+                }    
             If ($Entry -like "*eyr:*")
                 {
-                $eyr = $true
+                If (($Value -le 2030) -or ($Value -ge 2010))
+                    {
+                    $eyr = $true
+                    }
                 }
             If ($Entry -like "*hgt:*")
                 {
@@ -118,15 +133,15 @@ ForEach ($Line in $Array)
                 }
             If ($Entry -like "*hcl:*")
                 {
-                $hcl = $true
+                    $hcl = $true
                 }
             If ($Entry -like "*ecl:*")
                 {
-                $ecl = $true
+                    $ecl = $true
                 }
             If ($Entry -like "*pid:*")
                 {
-                $psid = $true
+                    $psid = $true
                 }
             #See if enough values are entered
             If (($byr -and $iyr -and $eyr -and -$hgt -and $hcl -and $ecl -and $psid) -and ($found -eq 0))
