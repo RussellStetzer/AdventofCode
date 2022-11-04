@@ -45,27 +45,78 @@ Count the number of valid passports - those that have all required fields. Treat
 "@
 
 #Import the file. Using Get-Content dumps it in to an array
-$Input = Get-Content(".\day4-sample.txt")
-$Information = $null
+$Array = Get-Content(".\day4-data.txt")
+#$Information = $null
+$byr = $null
+$iyr = $null
+$eyr = $null
+$hgt = $null
+$hcl = $null
+$ecl = $null
+$psid = $null
+$cid = $null
+$ValidPassports = 0
+
 #Scan the entry for the requires fields and count the matches
-ForEach ($Line in $Input)
+ForEach ($Line in $Array)
 {
    #If it is not null, it has values we want to combine with any other lines
     If (!($line))
         {
-        #Figure out how to scan a variable for matching fields short of stacking If statements
-        
-        Write-Output $Information
-    
-        #Reset the $Information variable 
-        $Information = $null
-           
-
+        #Reset the Found variable to protect against a line containing only cid which is not needed
+        $Found = 0
+        $byr = $null
+        $iyr = $null
+        $eyr = $null
+        $hgt = $null
+        $hcl = $null
+        $ecl = $null
+        $psid = $null
+        $cid = $null
         }
     else 
         {
-            $Information = $Information + " " + $Line
+            #$Information = $Information + " " + $Line
+            #Scan the line for values
+            If ($Line -like "*byr:*")
+                {
+                $byr = $true
+                }
+            If ($Line -like "*iyr:*")
+                {
+                $iyr = $true
+                }
+            If ($Line -like "*eyr:*")
+                {
+                $eyr = $true
+                }
+            If ($Line -like "*hgt:*")
+                {
+                $hgt = $true
+                }
+            If ($Line -like "*hcl:*")
+                {
+                $hcl = $true
+                }
+            If ($Line -like "*ecl:*")
+                {
+                $ecl = $true
+                }
+            If ($Line -like "*pid:*")
+                {
+                $psid = $true
+                }
+            If ($Line -like "*cid:*")
+                {
+                $cid = $true
+                }
+            #See if enough values are entered
+            If (($byr -and $iyr -and $eyr -and -$hgt -and $hcl -and $ecl -and $psid) -and ($found -eq 0))
+                {
+                    $ValidPassports ++
+                    $found = 1
+                }
         }
 
 }
-#This is working, but fails to return the last line of information since there is no "last" line. Adding a "last" line is ignored by the input.
+Write-Output $ValidPassports
