@@ -100,35 +100,44 @@ ForEach ($Line in $Array)
             }
         else 
             {
-                #Trim the entry to just the character to be evaluated
-                [string]$Value = $Entry.Remove(0,4)
                 #Scan the line for values
             If ($Entry -like "*byr:*")
                 {
-
-
-
-                    If (([int]$Value -le 2002) -or ([int]$Value -ge 1920)) 
+                    [int32]$Value = $Entry.Remove(0,4)
+                    If (($Value -le 2002) -and ($Value -ge 1920)) 
                         {
                         $byr = $true
                         }
                 }
             If ($Entry -like "*iyr:*")
                 {
-                If (($Value -le 2020) -or ($Value -ge 2010))
+                    [int32]$Value = $Entry.Remove(0,4)
+                If (($Value -le 2020) -and ($Value -ge 2010))
                     {
                     $iyr = $true
                     }
                 }    
             If ($Entry -like "*eyr:*")
                 {
-                If (($Value -le 2030) -or ($Value -ge 2010))
+                    [int32]$Value = $Entry.Remove(0,4)
+                If (($Value -le 2030) -and ($Value -ge 2010))
                     {
                     $eyr = $true
                     }
                 }
             If ($Entry -like "*hgt:*")
                 {
+                    [int32]$Value = $Entry.Remove(0,4)
+                    If ($Value -like "*in")
+                    {
+                        [int32]$Value = $Value.Remove(2,3)
+                        Write-Output "$Value in"
+                    }
+                    If ($Entry -like "*cm")
+                    {
+                        [int32]$Value = $Entry.Remove(3,4)
+                        Write-Output "$Value cm"
+                    }
                 $hgt = $true
                 }
             If ($Entry -like "*hcl:*")
