@@ -67,7 +67,7 @@ Count the number of valid passports - those that have all required fields and va
 
 
 #Import the file. Using Get-Content dumps it in to an array
-$Array = Get-Content(".\day4-2sample.txt")
+$Array = Get-Content(".\day4-data.txt")
 $byr = $null
 $iyr = $null
 $eyr = $null
@@ -77,6 +77,12 @@ $ecl = $null
 $psid = $null
 $ValidPassports = 0
 $Found = 0
+#Pattern string for the hair color check
+$colorpattern = "^[a-fA-F0-9]+$"
+#Pattern string for PID
+$idpattern = "^[0-9]+$"
+#Array of valid eye colors
+[array]$eyecolors = "amb,blu,brn,gry,grn,hzl,oth"
 
 #Scan the entry for the requires fields and count the matches
 ForEach ($Line in $Array)
@@ -84,10 +90,10 @@ ForEach ($Line in $Array)
     $SplitLine = $Line -split " "
     Foreach ($Entry in $SplitLine)
     {
+        $Value = $null
         #If it is not null, it has values we want to combine with any other lines
         If (!($Entry))
             {
-            Write-Output Blank
             #Reset the Found variable to protect against a line containing only cid which is not needed
             $Found = 0
             $byr = $null
@@ -120,37 +126,66 @@ ForEach ($Line in $Array)
             If ($Entry -like "*eyr:*")
                 {
                     [int32]$Value = $Entry.Remove(0,4)
-                If (($Value -le 2030) -and ($Value -ge 2010))
+                If (($Value -le 2030) -and ($Value -ge 2020))
                     {
                     $eyr = $true
                     }
                 }
             If ($Entry -like "*hgt:*")
                 {
-                    [int32]$Value = $Entry.Remove(0,4)
-                    If ($Value -like "*in")
+                    #Trim off the "hgt:" part of the string, have to output as string else will fail due to the cm/in at end
+                    [string]$Value = $Entry.Remove(0,4)
+                    #Trim off the "cm/in" part at the end and put back to Int to do -ge/-le checks
+                    [int]$Value = $Value.Substring(0,$Value.Length-2)
+                    If ($Entry -like "*in")
                     {
-                        [int32]$Value = $Value.Remove(2,3)
-                        Write-Output "$Value in"
+                        If (($Value -ge 59) -and ($Value -le 76))
+                        {
+                            $hgt = $true
+                        }
                     }
                     If ($Entry -like "*cm")
                     {
-                        [int32]$Value = $Entry.Remove(3,4)
-                        Write-Output "$Value cm"
+                        If (($Value -ge 150) -and ($Value -le 193))
+                        {
+                            $hgt = $true
+                        } 
                     }
                 $hgt = $true
                 }
-            If ($Entry -like "*hcl:*")
+            If ($Entry -like "*hcl:#*")
                 {
-                    $hcl = $true
+                    #Trim off the first hcl:# since it has been checked
+                    [string]$Value = $Entry.Remove(0,5)
+                    #The allowed characters were declaired above. This will confirm the string only contains those characters
+                    If ($Value -match $colorpattern)
+                    {
+                        $hcl = $true
+                    }
                 }
             If ($Entry -like "*ecl:*")
                 {
-                    $ecl = $true
+                    [string]$Value = $Entry.Remove(0,4)
+                    Foreach ($color in $eyecolors)
+                    {
+                        If ($color -match $Value)
+                        {
+                            $ecl = $true
+                        }
+                    }
+                    
                 }
             If ($Entry -like "*pid:*")
                 {
-                    $psid = $true
+                    If($Entry.Length -eq 13)
+                    {
+                        [string]$Value = $Entry.Remove(0,4)
+                        If ($Value -match $idpattern)
+                        {
+                            $psid = $true
+                        }
+                        
+                    }
                 }
             #See if enough values are entered
             If (($byr -and $iyr -and $eyr -and -$hgt -and $hcl -and $ecl -and $psid) -and ($found -eq 0))
