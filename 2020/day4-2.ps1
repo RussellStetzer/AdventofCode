@@ -63,6 +63,8 @@ eyr:2022
 
 iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
 Count the number of valid passports - those that have all required fields and valid values. Continue to treat cid as optional. In your batch file, how many passports are valid?
+
+RS - I am getting 187 as a result. Running other code with identical deteciton is 184. Over an hour of troubleshooting is enough.
 "@
 
 
@@ -77,16 +79,17 @@ $ecl = $null
 $psid = $null
 $ValidPassports = 0
 $Found = 0
-#Pattern string for the hair color check
-$colorpattern = "^[a-fA-F0-9]+$"
+#Pattern string and length for the hair color check
+$colorpattern = "^[a-f0-9]{6}$"
 #Pattern string for PID
-$idpattern = "^[0-9]+$"
+$idpattern = "^\d{9}$"
 #Array of valid eye colors
 [array]$eyecolors = "amb,blu,brn,gry,grn,hzl,oth"
 
 #Scan the entry for the requires fields and count the matches
 ForEach ($Line in $Array)
 {
+    #Converts each line into its own array, dividing the entries by the character specified
     $SplitLine = $Line -split " "
     Foreach ($Entry in $SplitLine)
     {
@@ -110,7 +113,7 @@ ForEach ($Line in $Array)
             If ($Entry -like "*byr:*")
                 {
                     [int32]$Value = $Entry.Remove(0,4)
-                    If (($Value -le 2002) -and ($Value -ge 1920)) 
+                    If (($Value -ge 1920) -and ($Value -le 2002)) 
                         {
                         $byr = $true
                         }
@@ -118,7 +121,7 @@ ForEach ($Line in $Array)
             If ($Entry -like "*iyr:*")
                 {
                     [int32]$Value = $Entry.Remove(0,4)
-                If (($Value -le 2020) -and ($Value -ge 2010))
+                If (($Value -ge 2010) -and ($Value -le 2020))
                     {
                     $iyr = $true
                     }
@@ -126,7 +129,7 @@ ForEach ($Line in $Array)
             If ($Entry -like "*eyr:*")
                 {
                     [int32]$Value = $Entry.Remove(0,4)
-                If (($Value -le 2030) -and ($Value -ge 2020))
+                If (($Value -ge 2020) -and ($Value -le 2030))
                     {
                     $eyr = $true
                     }
@@ -173,19 +176,25 @@ ForEach ($Line in $Array)
                             $ecl = $true
                         }
                     }
+                    #switch ([string]$Value)
+                    #{
+                    #    amb {$ecl = $true}
+                    #    blu {$ecl = $true}
+                    #    brn {$ecl = $true}
+                    #    gry {$ecl = $true}
+                    #    grn {$ecl = $true}
+                    #    hzl {$ecl = $true}
+                    #    oth {$ecl = $true}
+                    #}
                     
                 }
             If ($Entry -like "*pid:*")
                 {
-                    If($Entry.Length -eq 13)
-                    {
                         [string]$Value = $Entry.Remove(0,4)
                         If ($Value -match $idpattern)
                         {
                             $psid = $true
                         }
-                        
-                    }
                 }
             #See if enough values are entered
             If (($byr -and $iyr -and $eyr -and -$hgt -and $hcl -and $ecl -and $psid) -and ($found -eq 0))
