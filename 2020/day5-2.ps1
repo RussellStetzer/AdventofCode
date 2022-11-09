@@ -11,9 +11,21 @@ What is the ID of your seat?
 "@
 
 $Seats = Get-Content .\day5-data.txt
+#We need to build a function looking for seat 9 (Column 1 * 8 + 1). If no hit, increment the number and see if we get a match. Once we get a match, continue looking for matches until we don't find one. That one we don't find is our seat id.
+$MySeat = 0
+$SeatStart = $false
 
-#We need to track the highest seat ID
-[int]$HighSeatID = 0
+For ($count=0; $count -lt $MySeat; $count++)
+{
+    If ($SeatStart -eq $false)
+    {
+        #We have not yet found the first seat in the dataset
+    }
+    else {
+       #We have found the first seat in the dataset
+        
+    }
+}
 
 Foreach ($Seat in $Seats)
 {
@@ -32,4 +44,3 @@ Foreach ($Seat in $Seats)
         $HighSeatID = $SeatID
     }
 }
-Write-Output $HighSeatID
