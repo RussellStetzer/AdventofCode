@@ -10,23 +10,11 @@ What is the ID of your seat?
 
 "@
 
-$Seats = Get-Content .\day5-data.txt
-#We need to build a function looking for seat 9 (Column 1 * 8 + 1). If no hit, increment the number and see if we get a match. Once we get a match, continue looking for matches until we don't find one. That one we don't find is our seat id.
+$Seats = Get-Content .\day5-sample.txt
 $MySeat = 0
-$SeatStart = $false
 
-For ($count=0; $count -lt $MySeat; $count++)
-{
-    If ($SeatStart -eq $false)
-    {
-        #We have not yet found the first seat in the dataset
-    }
-    else {
-       #We have found the first seat in the dataset
-        
-    }
-}
 
+# Parsing the values into their seat value overwriting the value in the database
 Foreach ($Seat in $Seats)
 {
     #Split off the Row and Column
@@ -38,9 +26,10 @@ Foreach ($Seat in $Seats)
     $Column = $Column.Replace('R','1')
     $Column = $Column.Replace('L','0')
     $Column = [Convert]::ToInt32($Column,2)
-    $SeatID = ($Row * 8) + $Column
-    If ($SeatID -gt $HighSeatID)
-    {
-        $HighSeatID = $SeatID
-    }
+    $Seat = ($Row * 8) + $Column
+
 }
+
+$Seats | Sort-Object -Descending
+
+Write-Output $Seats
