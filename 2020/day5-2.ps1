@@ -35,7 +35,7 @@ Foreach ($Seat in $Seats)
 $CurrentSeat = ($results | Sort-Object)[0]
 #Going through the array looking for the missing entry
 
-For ($CurrentSeat = ($results | Sort-Object)[0]); $CurrentSeat -lt ($results | Sort-Object -Descending)[0]; $CurrentSeat++)
+For ($CurrentSeat = ($results | Sort-Object)[0]; $CurrentSeat -lt ($results | Sort-Object -Descending)[0]; $CurrentSeat++)
 {
     If ($Results.Contains($CurrentSeat))
     {} Else {$MySeat = $CurrentSeat}
