@@ -35,16 +35,10 @@ Foreach ($Seat in $Seats)
 $CurrentSeat = ($results | Sort-Object)[0]
 #Going through the array looking for the missing entry
 
-Foreach ($ResultSeat in ($results | Sort-Object))
+For ($CurrentSeat = ($results | Sort-Object)[0]); $CurrentSeat -lt ($results | Sort-Object -Descending)[0]; $CurrentSeat++)
 {
-    If ($CurretSeat -match "$ResultSeat.value")
-    {
-        $CurrentSeat ++
-    }else {
-         $MySeat = $CurrentSeat
-     }
-
+    If ($Results.Contains($CurrentSeat))
+    {} Else {$MySeat = $CurrentSeat}
 }
-
 
 Write-Output $MySeat
