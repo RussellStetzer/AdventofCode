@@ -10,11 +10,13 @@ What is the ID of your seat?
 
 "@
 
-$Seats = Get-Content .\day5-sample.txt
-$MySeat = 0
+$Seats = Get-Content .\day5-data.txt
+[int]$MySeat = 0
+[int]$CurrentSeat = 0
 
 
-# Parsing the values into their seat value overwriting the value in the database
+# Parsing the values into their seat value and returning the info to a new array
+$results = @(
 Foreach ($Seat in $Seats)
 {
     #Split off the Row and Column
@@ -26,10 +28,23 @@ Foreach ($Seat in $Seats)
     $Column = $Column.Replace('R','1')
     $Column = $Column.Replace('L','0')
     $Column = [Convert]::ToInt32($Column,2)
-    $Seat = ($Row * 8) + $Column
+    ($Row * 8) + $Column
+}
+)
+#Sets the CurrentSeat to the first number in the array
+$CurrentSeat = ($results | Sort-Object)[0]
+#Going through the array looking for the missing entry
+
+Foreach ($ResultSeat in ($results | Sort-Object))
+{
+    If ($CurretSeat -match "$ResultSeat.value")
+    {
+        $CurrentSeat ++
+    }else {
+         $MySeat = $CurrentSeat
+     }
 
 }
 
-$Seats | Sort-Object -Descending
 
-Write-Output $Seats
+Write-Output $MySeat
