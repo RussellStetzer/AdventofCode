@@ -48,14 +48,16 @@ ForEach ($Answer in $Answers)
     #if the line is blank, do the other statement    
     If (!($Answer))
             {
-                write-output ($Values | Sort-Object -Unique).length
+                Write-output "Values $Values"
+                write-output Length
+                Write-Output (Sort-object -InputObject $Values -unique)
                 $Sum =+ ($Values | Sort-Object -Unique).length
+                Write-Output "Current Sum $Sum"
                 $Values = $null
             }
         else 
             {
                 $Values = $Values + "$Answer"
-                Write-output $values
             }
 }
-Write-Output $Sum
+Write-Output "Final Sum $Sum"
