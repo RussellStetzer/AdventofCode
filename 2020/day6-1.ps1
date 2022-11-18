@@ -40,24 +40,28 @@ In this example, the sum of these counts is 3 + 3 + 3 + 1 + 1 = 11.
 For each group, count the number of questions to which anyone answered "yes". What is the sum of those counts?
 "@
 #import dataset. I added a last carrage return to the end of the dataset to try and trick it into processing the values after they were all added vs one at a time.
-$Answers = Get-Content .\day6-sample.txt
+$Answers = Get-Content .\day6-data.txt
 [string]$Values = $null
 [int]$Sum = 0
 ForEach ($Answer in $Answers)
 {
+    
     #if the line is blank, do the other statement    
     If (!($Answer))
             {
-                Write-output "Values $Values"
-                write-output Length
-                Write-Output (Sort-object -InputObject $Values -unique)
-                $Sum =+ ($Values | Sort-Object -Unique).length
-                Write-Output "Current Sum $Sum"
+                #This takes the overall list of entries collected, splits each into it own array entry which allows us to use the -Unique switch to remove duplicates
+                $Sorted = $Values.ToCharArray() | Sort-Object -Unique
+               #Using -join $null displays the whole array as a single entry with no delimiter
+                $Sum = $Sum + ($Sorted -join $null).Length
                 $Values = $null
+                
             }
         else 
             {
                 $Values = $Values + "$Answer"
             }
 }
+#I am using this as a hack to include the last entry in the data to the total. Even by adding a training carrage return to the dataset, it ignores it. 
+$Sorted = $Values.ToCharArray() | Sort-Object -Unique
+$Sum = $Sum + ($Sorted -join $null).Length
 Write-Output "Final Sum $Sum"
