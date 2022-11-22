@@ -31,28 +31,46 @@ In this example, the sum of these counts is 3 + 0 + 1 + 1 + 1 = 6.
 "@
 
 $Answers = Get-Content .\day6-sample.txt
-[string]$Values = $null
+[System.Collections.ArrayList]$Values = $null
+$ValuesSet=$False
+[string]$BadValues = $null
 [int]$Sum = 0
 ForEach ($Answer in $Answers)
 {
     If (!($Answer))
     {
-       #Using -join $null displays the whole array as a single entry with no delimiter
-        $Sum = $Sum + ($Values -join $null).Length
-        $Values = $null
+        Write-Output "Resulting Values $Values"
+        #Using -join $null displays the whole array as a single entry with no delimiter
+        If (!($Values)) {} else
+        {
+            $Sum = $Sum + ($Values -join "").Length
+            Write-output "Sum $Sum"
+        }
+        $ValuesSet = $false
     }
-elseif ($null -eq $Values)
+    #This is a way to look to see if the value is $null. My "elseif ($null -eq $Values) didn't work
+    elseif ($ValuesSet -eq $false)
     {
-       $Values = $Answer
+        #The first pass will just set the list of Answers to a list to compare future answers against
+       $Values = $Answer.ToCharArray()
+       $ValuesSet = $true
        Write-Output "Values $Values"
     }
     else {
        #loop through every value in $Values. If that value does not appear in the answer, null out the value
-       ForEach ($Value in $Values.ToCharArray())
+       ForEach ($Value in $Values)
        {
         If ($Value -notmatch $Answer)
-        {$Value -replace $null}
-       }
+        {
+            Write-output "Not Match $Value"
+            $BadValues = $BadValues + "$Value"
+        }
+        Else {Write-Output "Match $value"}
+    }
+    #Remove all of the identified bad values
+    Write-Output "Bad Letters $BadValues"
+    $Values.remove($BadValues.toCharArray())
+    $BadValues = $null
     }
 }
 
