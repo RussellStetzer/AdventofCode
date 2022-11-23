@@ -30,7 +30,7 @@ In the fifth group, everyone (all 1 person) answered "yes" to 1 question, b.
 In this example, the sum of these counts is 3 + 0 + 1 + 1 + 1 = 6.
 "@
 
-$Answers = Get-Content .\day6-sample.txt
+$Answers = Get-Content .\day6-data.txt
 #Using an array list since that will allow you to remove entries from it since Arrays are static length
 [System.Collections.ArrayList]$Values = $null
 $ValuesSet=$False
@@ -40,12 +40,10 @@ ForEach ($Answer in $Answers)
 {
     If (!($Answer))
     {
-        Write-Output "Resulting Values $Values"
         #Using -join $null displays the whole array as a single entry with no delimiter
         If (!($Values)) {} else
         {
             $Sum = $Sum + ($Values -join "").Length
-            Write-output "Sum $Sum"
         }
         $ValuesSet = $false
     }
@@ -55,22 +53,18 @@ ForEach ($Answer in $Answers)
        $Values = $Answer.ToCharArray()
        #Had to add a ValueSet variable since it could fully wipe out the existing Values entry if there are no matches
        $ValuesSet = $true
-       Write-Output $Values
     }
     else {
        #loop through every value in $Values. If that value does not appear in the answer, add it to BadValues to remove after checking everything
        ForEach ($Value in $Values)
        {
-        If ($Value -notlike $Answer)
+        If ($Answer -notmatch $Value)
         {
-            Write-output "Not Match $Value"
             $BadValues = $BadValues + "$Value"
         }
     }
     #Remove all of the identified bad values
-    Write-Output "Bad Letters $BadValues"
     [array]$BadValuesArray = $BadValues.toCharArray()
-    Write-Output "Bad Values Array $BadValuesArray"
     Foreach ($BadValue in $BadValuesArray)
     {
         $Values.remove($BadValue)
