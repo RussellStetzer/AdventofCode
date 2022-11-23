@@ -31,14 +31,26 @@ How many bag colors can eventually contain at least one shiny gold bag? (The lis
 "@
 
 $Rules = Get-Content .\day7-sample.txt
-$Match = 0
-
-[array]$BagColors = "shiny gold"
+$BagColors
+[array]$SplitBag
 #Parse the list getting all of the shiny gold bag entries, copying and trimming to a list of bags colors. 
 #Loop the check statment to see how many bags are listed, loop while the list of bag colors is keep increasing. Hopefully no loops?
 
 #I am going to need to prime the list of bag colors. I can't just have shiny gold in it, since it is a sub-bag, not the outer bag.
+ForEach ($Rule in $Rules)
+{
+    If ($Rule -match 'shiny gold')
+        {
+            If ($Rule -notmatch 'shiny gold bags contain')
+            {    
+                
+                $SplitBag =$Rule.Split(" ")
+                $BagColors = $BagColors + ""$SplitBag[0]" + ' ' + "$SplitBag[1]""
+            }
+        }
+}
 
+<#
 Foreach ($Bag in $BagColors)
 {
     foreach ($Rule in $Rules)
@@ -46,9 +58,11 @@ Foreach ($Bag in $BagColors)
         If ($Rule -match $Bag)
         {
             If ($Rule -notlike "$Bag bags contain")
+            {
                 $BagColors =+ $Bag
+            }
         }
     }
 }
-Write-Output $BagColors
-Write-Output $Match
+#>
+Write-Output "Bag Colors $BagColors"
