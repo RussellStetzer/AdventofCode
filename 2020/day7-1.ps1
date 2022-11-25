@@ -31,38 +31,49 @@ How many bag colors can eventually contain at least one shiny gold bag? (The lis
 "@
 
 $Rules = Get-Content .\day7-sample.txt
-$BagColors
-[array]$SplitBag
+$BagColors = New-Object -TypeName "System.Collections.ArrayList"
+$BagColors.Add("shiny gold")
+[array]$SplitBag = $null
+$BagCount = 0
 #Parse the list getting all of the shiny gold bag entries, copying and trimming to a list of bags colors. 
 #Loop the check statment to see how many bags are listed, loop while the list of bag colors is keep increasing. Hopefully no loops?
 
 #I am going to need to prime the list of bag colors. I can't just have shiny gold in it, since it is a sub-bag, not the outer bag.
-ForEach ($Rule in $Rules)
+<#ForEach ($Rule in $Rules)
 {
     If ($Rule -match 'shiny gold')
         {
             If ($Rule -notmatch 'shiny gold bags contain')
             {    
                 
-                $SplitBag =$Rule.Split(" ")
-                $BagColors = $BagColors + ""$SplitBag[0]" + ' ' + "$SplitBag[1]""
+                $SplitBag = $Rule.Split(" bags")
+                $BagColors.Add($SplitBag[0])
             }
         }
 }
-
-<#
-Foreach ($Bag in $BagColors)
+#>
+For ($i = 0; $i -lt $Rules.Length; $i++)
 {
-    foreach ($Rule in $Rules)
+    Foreach ($Bag in $BagColors)
     {
-        If ($Rule -match $Bag)
+        foreach ($Rule in $Rules)
         {
-            If ($Rule -notlike "$Bag bags contain")
+            If ($Rule -match $Bag)
             {
-                $BagColors =+ $Bag
+                If ($Rule -notlike "$Bag bags contain")
+                {
+                    $SplitBag = $Bag.Split(" bags")
+                    $BagColors.Add($SplitBag[0])
+                }
             }
         }
     }
+    If ($BagColors.length -gt $BagCount)
+        {
+        $BagCount = $BagColors.length
+        }
+        else {
+            $i = $BagColors.Length
+        }
 }
-#>
-Write-Output "Bag Colors $BagColors"
+Write-Output $BagColors.Length
