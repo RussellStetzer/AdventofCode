@@ -52,6 +52,7 @@ $BagCount = 0
         }
 }
 #>
+#Can we do this all at once by pre-importing shiny gold to the list?
 For ($i = 0; $i -lt $Rules.Length; $i++)
 {
     Foreach ($Bag in $BagColors)
@@ -68,12 +69,13 @@ For ($i = 0; $i -lt $Rules.Length; $i++)
             }
         }
     }
-    If ($BagColors.length -gt $BagCount)
+    If ($BagColors.count -gt $BagCount)
         {
-        $BagCount = $BagColors.length
+        $BagCount = $BagColors.count
         }
         else {
-            $i = $BagColors.Length
+            $i = $BagColors.count
         }
 }
-Write-Output $BagColors.Length
+#If we have shiny gold imported into the list to begin with, we'll need to subtract one from the final count
+Write-Output $BagColors.count
