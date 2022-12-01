@@ -30,11 +30,11 @@ So, in this example, the number of bag colors that can eventually contain at lea
 How many bag colors can eventually contain at least one shiny gold bag? (The list of rules is quite long; make sure you get all of it.)
 "@
 
-$Rules = Get-Content .\day7-sample.txt
+$Rules = Get-Content .\day7-data.txt
 $BagColors = New-Object -TypeName "System.Collections.ArrayList"
 $BagColors.Add("shiny gold")
+$NewColors = New-Object -TypeName "System.Collections.ArrayList"
 [array]$SplitBag = $null
-$BagCount = 0
 #Parse the list getting all of the shiny gold bag entries, copying and trimming to a list of bags colors. 
 #Loop the check statment to see how many bags are listed, loop while the list of bag colors is keep increasing. Hopefully no loops?
 
@@ -64,18 +64,18 @@ For ($i = 0; $i -lt $Rules.Length; $i++)
                 If ($Rule -notlike "$Bag bags contain")
                 {
                     $SplitBag = $Bag.Split(" bags")
-                    $BagColors.Add($SplitBag[0])
+                    $NewColors.Add($SplitBag[0])
                 }
             }
         }
     }
-    If ($BagColors.count -gt $BagCount)
+    If ($NewColors.count -gt $BagColors.count)
         {
-        $BagCount = $BagColors.count
+        $BagColors = $NewColors
         }
         else {
             $i = $BagColors.count
         }
 }
 #If we have shiny gold imported into the list to begin with, we'll need to subtract one from the final count
-Write-Output $BagColors.count
+Write-Output Final Count $BagColors.count
