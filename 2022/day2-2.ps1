@@ -11,7 +11,8 @@ Now that you're correctly decrypting the ultra top secret strategy guide, you wo
 
 Following the Elf's instructions for the second column, what would your total score be if everything goes exactly according to your strategy guide?
 "@
-$Guide = Get-Content(".\day2-data.txt")
+
+$Guide = Get-Content $PSScriptRoot\day2-data.txt
 $Score = 0
 
 Foreach ($Round in $Guide)
@@ -65,6 +66,5 @@ Foreach ($Round in $Guide)
             $Score += 7
         } 
     }
-
 }
 Write-Output $Score
