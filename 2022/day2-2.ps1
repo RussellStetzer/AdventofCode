@@ -16,52 +16,53 @@ $Score = 0
 
 Foreach ($Round in $Guide)
 {
-$SplitRound = $Round.split(" ")
+#Split will divide a string into sub-strings to be called directly.
+    $SplitRound = $Round.split(" ")
 #A is Rock, B is Paper, C is Scissors for opponent
 #X is Lose, Y is Tie, Z is win for us
     If ($SplitRound[0] -eq "A")
     {
         If ($SplitRound[1] -eq "X")
         {
-            $Score = $Score + 3
+            $Score += 3
         }
         If ($SplitRound[1] -eq "Y")
         {
-            $Score = $Score + 4
+            $Score += 4
         }
         If ($SplitRound[1] -eq "Z")
         {
-            $Score = $Score + 8
+            $Score += 8
         }
     }
     If ($SplitRound[0] -eq "B")
     {
         If ($SplitRound[1] -eq "X")
         {
-            $Score = $Score + 1
+            $Score += 1
         }
         If ($SplitRound[1] -eq "Y")
         {
-            $Score = $Score + 5
+            $Score += 5
         }
         If ($SplitRound[1] -eq "Z")
         {
-            $Score = $Score + 9
+            $Score += 9
         }  
     }
     IF ($SplitRound[0] -eq "C")
     {
         If ($SplitRound[1] -eq "X")
         {
-            $Score = $Score + 2
+            $Score += 2
         }
         If ($SplitRound[1] -eq "Y")
         {
-            $Score = $Score + 6
+            $Score += 6
         }
         If ($SplitRound[1] -eq "Z")
         {
-            $Score = $Score + 7
+            $Score += 7
         } 
     }
 
