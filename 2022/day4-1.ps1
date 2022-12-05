@@ -42,13 +42,19 @@ In how many assignment pairs does one range fully contain the other?
 "@
 $Total = 0
 ForEach ($Pair in (Get-Content $PSScriptRoot\day4-data.txt))
-{    
+{  
+    #Compare-Object -ReferenceObject (1..5) -DifferenceObject (1..6)  
     $Pair = $Pair.Split(",")
     $FirstPair = $Pair[0].Split("-")
     $SecondPair = $Pair[1].Split("-")
     $FirstSection = $FirstPair[0]..$FirstPair[1]
     $SecondSection = $SecondPair[0]..$SecondPair[1]
-    If (($FirstSection -contains "$SecondSection") -or ($SecondSection -contains "$FirstSection"))
-        {$Total ++}
+    If (($FirstSection -match $SecondSection) -or ($SecondSection -match $FirstSection))
+    #If ($null -eq (Compare-Object -ReferenceObject ($FirstPair[0]..$FirstPair[1]) -DifferenceObject ($SecondPair[0]..$SecondPair[1])))
+    {$Total ++}
+    #If ($null -eq (Compare-Object -ReferenceObject ($SecondPair[0]..$SecondPair[1]) -DifferenceObject ($FirstPair[0]..$FirstPair[1])))
+    #{$Total ++}
+
+
 }
 Write-Output $Total
