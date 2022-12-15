@@ -1,5 +1,5 @@
 $data = Get-Content -Path .\day4-data.txt
-#$data = Get-Content -Path .\test.txt
+#$data = Get-Content -Path .\test.txt 
 
 $score = 0
 $data | ForEach-Object {
