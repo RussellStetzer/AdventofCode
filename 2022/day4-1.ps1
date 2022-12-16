@@ -43,15 +43,9 @@ In how many assignment pairs does one range fully contain the other?
 $Total = 0
 ForEach ($Pair in (Get-Content $PSScriptRoot\day4-data.txt))
 {  
-    $Pair = $Pair.Split(",")
-    $FirstPair = $Pair[0].Split("-")
-    $SecondPair = $Pair[1].Split("-")
-   # If (($FirstPair[0] -ge $SecondPair[0]) -and ($FirstPair[0] -le $SecondPair[1]))
-   # {$Total++}
-   # elseIf (($SecondPair[0] -ge $FirstPair[0]) -and ($SecondPair[0] -le $FirstPair[1]))
-   # {$Total++}
+    $Pair = $Pair.Split(",").Split("-")
    #if ( ($c -ge $a -and $d -le $b) -or ($d -ge $b -and $c -le $a) ){
-if (($FirstPair[0] -le $SecondPair[0] -and $FirstPair[1] -ge $SecondPair[1]) -or ($SecondPair[0] -ge $FirstPair[0] -and $SecondPair[1] -le $FirstPair[1])) {
+if (($Pair[2] -ge $Pair[0] -and $Pair[3] -le $Pair[1]) -or ($Pair[3] -ge $Pair[1] -and $Pair[2] -le $Pair[0])) {
     $Total++
     }
 }
