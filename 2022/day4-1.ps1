@@ -50,10 +50,8 @@ ForEach ($Pair in (Get-Content $PSScriptRoot\day4-data.txt))
    # {$Total++}
    # elseIf (($SecondPair[0] -ge $FirstPair[0]) -and ($SecondPair[0] -le $FirstPair[1]))
    # {$Total++}
-   if (($FirstPair[0] -ge $SecondPair[0]) -and ($FirstPair[0] -le $SecondPair[1])) {
-    $Total++
-}
-elseif (($SecondPair[0] -ge $FirstPair[0]) -and ($SecondPair[0] -le $FirstPair[1])) {
+   #if ( ($c -ge $a -and $d -le $b) -or ($d -ge $b -and $c -le $a) ){
+if (($FirstPair[0] -le $SecondPair[0] -and $FirstPair[1] -ge $SecondPair[1]) -or ($SecondPair[0] -ge $FirstPair[0] -and $SecondPair[1] -le $FirstPair[1])) {
     $Total++
     }
 }

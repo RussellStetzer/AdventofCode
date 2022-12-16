@@ -1,26 +1,20 @@
 $data = Get-Content -Path .\day4-data.txt
-#$data = Get-Content -Path .\test.txt
+$fullycontained = 0
+$overlap = 0
 
-$score = 0
-$data | ForEach-Object {
-    Write-Host "*********************"
-    $left = $_.Split(',')[0]
-    $leftStart = [int]$left.Split('-')[0]
-    $leftEnd = [int]$left.Split('-')[1]
-    Write-Host "Left " $left #"     " $leftStart $leftEnd
-
-    $right = $_.Split(',')[1]
-    $rightStart = [int]$right.Split('-')[0]
-    $rightEnd = [int]$right.Split('-')[1]
-    Write-Host "Right" $right #"     " $rightStart $rightEnd
-
-    if (($leftStart -ge $rightStart) -and ($leftStart -le $rightEnd)) {
-        $score++
-        Write-Host "============ L in R $score"
+foreach ($line in $data) {
+    $workingset = $line.Split(',').Split('-')
+    $a = [int]$workingset[0]
+    $b = [int]$workingset[1]
+    $c = [int]$workingset[2]
+    $d = [int]$workingset[3]
+    if ( ($c -ge $a -and $d -le $b) -or ($d -ge $b -and $c -le $a) ) {
+        $fullycontained++
     }
-    elseif (($rightStart -ge $leftStart) -and ($rightStart -le $leftEnd)) {
-        $score++
-        Write-Host "============ R in L $score"
+    if ( ($c -le $a -and $d -ge $a) -or ($c -le $b -and $d -le $b -and $d -ge $a) -or ($c -le $b -and $d -ge $b) ) {
+        $overlap++
     }
 }
-Write-Host " There were $score matches."
+
+Write-Host "Part 01 Answer: $fullycontained"
+Write-Host "Part 02 Answer: $overlap"
