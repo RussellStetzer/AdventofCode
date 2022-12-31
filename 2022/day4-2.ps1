@@ -21,7 +21,8 @@ In how many assignment pairs do the ranges overlap?
 
 2 < 0 and 3 > 0
 2 < 1 and 3 < 1 and 3 > 0
-2 < 1 and 4 > 1
+2 < 1 and 3 > 1
+Answer is 843
 "@
 
 $Total = 0
