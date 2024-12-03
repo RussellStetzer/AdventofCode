@@ -21,3 +21,24 @@ while ($count -lt $firstArray.length)
 		$count++
 	}
 Write-Output Part 1 $total
+
+#set a Part2Total variable
+#Get the first digit
+#go through the second list and count how many times it shows up
+#multiply the first digit against how many times it appears in the second list, and add it to the Total
+
+$Part2Total = 0
+$Part2Count = 0
+Foreach ($Digit in $FirstArray)
+{
+$Part2Count = 0
+	Foreach ($MatchDigit in $secondArray)
+	{
+		If ($Digit -eq $MatchDigit)
+		{
+			$Part2Count++
+		}
+	}
+$Part2Total = $Part2Total + ([int]$Digit * $Part2Count)
+}
+Write-Output "Part 2 $Part2Total"
